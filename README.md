@@ -26,11 +26,9 @@ This project shows how to configure STM32's built-in timer peripheral (TIM) to t
 3. For PWM mode, uncomment PWM section in `main.c`
 
 ## Code Structure
-#include "main.h"
-
+<pre><code>#include "main.h"
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-
 int main(void)
 {
     HAL_Init();
@@ -47,3 +45,4 @@ int main(void)
         HAL_Delay(100);
     }
 }
+</code></pre>
