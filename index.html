@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STM32 Timer-Based LED Blinking Project</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav {
+            background-color: #34495e;
+            padding: 1rem;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav li {
+            margin: 0 1rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #3498db;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        section {
+            background-color: white;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #eef1f5;
+        }
+        h2, h3, h4{
+            color: #3e5f80;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        .component-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .component-card h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f8f8f8;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .diagram-container img {
+            max-width: 80%; /* Set maximum width to 80% of the container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>STM32 Timer-Based LED Blinking Project</h1>
+            <p>Exploring Embedded Systems with STM32 Microcontrollers</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#definition">Definition</a></li>
+            <li><a href="#uses">Uses</a></li>
+            <li><a href="#advantages">Advantages</a></li>
+            <li><a href="#components">Components</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#code">Code</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>
+                This project demonstrates how to use an STM32 microcontroller's built-in timer to control an LED blinking pattern.
+                Unlike traditional approaches that rely on delay functions, this method uses hardware timers for precise timing control,
+                allowing the microcontroller to perform other tasks simultaneously.
+            </p>
+            <p>
+                The STM32 microcontroller family from STMicroelectronics offers powerful timers that can be configured for various timing
+                and PWM (Pulse Width Modulation) applications. In this project, we'll explore basic timer configuration to toggle an LED
+                at precise intervals.
+            </p>
+        </section>
+
+        <section id="definition">
+            <h2>What is Timer-Based LED Blinking?</h2>
+            <p>
+                Timer-based LED blinking is a method where a microcontroller's built-in timer peripheral is used to control the timing
+                of LED state changes (on/off) instead of using software-based delay loops. The timer operates independently of the CPU,
+                generating interrupts at precise intervals that trigger the LED to toggle state.
+            </p>
+            <div class="diagram-container">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/733d3f3e-196e-476f-b701-ee6e5171e784.png" alt="Block diagram showing STM32 timer controlling an LED with precise timing intervals" />
+                <p>Figure 1: Timer-based LED Blinking Concept</p>
+            </div>
+        </section>
+
+        <section id="uses">
+            <h2>Practical Uses</h2>
+            <ul>
+                <li><strong>Embedded Systems Timing:</strong> Learn fundamental timing concepts in embedded development</li>
+                <li><strong>Status Indicators:</strong> Create reliable status LEDs for devices</li>
+                <li><strong>Prototyping:</strong> Foundation for more complex timing applications</li>
+                <li><strong>Education:</strong> Teaching microcontroller timer peripherals</li>
+                <li><strong>Precision Timing:</strong> Applications requiring accurate timing without CPU overhead</li>
+            </ul>
+            <div class="diagram-container">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d1ae42c4-4561-4e8c-9197-de6dc124091e.png" alt="Various applications of timer-controlled LEDs in embedded systems" />
+                <p>Figure 2: Applications of Timer-Based LED Control</p>
+            </div>
+        </section>
+
+        <section id="advantages">
+            <h2>Advantages of Timer-Based Approach</h2>
+            <div class="component-card">
+                <h3>Efficiency</h3>
+                <p>Unlike delay-based methods, timer interrupts don't block the CPU, allowing it to perform other tasks.</p>
+            </div>
+            <div class="component-card">
+                <h3>Precision</h3>
+                <p>Hardware timers provide much more accurate timing than software loops.</p>
+            </div>
+            <div class="component-card">
+                <h3>Flexibility</h3>
+                <p>Easy to change timing parameters without restructuring code.</p>
+            </div>
+            <div class="component-card">
+                <h3>Scalability</h3>
+                <p>Can control multiple LEDs with different timing patterns simultaneously.</p>
+            </div>
+            <div class="component-card">
+                <h3>Low Power</h3>
+                <p>Allows CPU to enter low-power modes while timer handles timing.</p>
+            </div>
+        </section>
+
+        <section id="components">
+            <h2>Required Components</h2>
+            <div class="component-card">
+                <h3>STM32 Development Board</h3>
+                <p>Any STM32 board (like STM32F103C8T6 Blue Pill) with accessible GPIO pins.</p>
+            </div>
+            <div class="component-card">
+                <h3>LED</h3>
+                <p>Standard 3mm or 5mm LED (any color).</p>
+            </div>
+            <div class="component-card">
+                <h3>Resistor</h3>
+                <p>Current limiting resistor (220Ω-1kΩ) for the LED.</p>
+            </div>
+            <div class="component-card">
+                <h3>Breadboard</h3>
+                <p>For prototyping and connecting components.</p>
+            </div>
+            <div class="component-card">
+                <h3>Jumper Wires</h3>
+                <p>For making connections between components.</p>
+            </div>
+            <div class="component-card">
+                <h3>STM32CubeIDE</h3>
+                <p>Official development environment for STM32 (or other compatible IDE).</p>
+            </div>
+            <div class="diagram-container">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6bed9a59-3368-44b7-8a7b-2f8cc767d061.png" alt="Circuit diagram showing STM32 connected to LED with resistor in series" />
+                <p>Figure 3: Circuit Setup Diagram</p>
+            </div>
+        </section>
+
+        <section id="setup">
+            <h2>Hardware Setup</h2>
+            <ol>
+                <li>Connect the anode (long lead) of the LED to a GPIO pin (e.g., PA5) through a current-limiting resistor.</li>
+                <li>Connect the cathode (short lead) of the LED to ground.</li>
+                <li>Ensure your STM32 board is properly powered (USB or external power).</li>
+                <li>The GPIO pin used should be configured as output push-pull.</li>
+            </ol>
+            <div class="diagram-container">
+                <img src="https://how2electronics.com/wp-content/uploads/2020/10/DS18B20-STM32-880x495.jpg" alt="Physical setup of STM32 board with LED connected via breadboard" />
+                <p>Figure 4: Physical Setup</p>
+            </div>
+        </section>
+
+        <section id="code">
+            <h2>STM32 Timer-Based LED Blinking Code</h2>
+            <p>Here's the complete code for timer-based LED blinking using an STM32 microcontroller:</p>
+           
+            <h3>Main Code (main.c)</h3>
+            <pre><code>
+#include "main.h"
+
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+
+    while (1)
+    {
+        // LED ON
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+        HAL_Delay(100);
+        // LED OFF
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+        HAL_Delay(100);
+    }
+}
+            </code></pre>
+
+            <h3>How the Code Works</h3>
+            <ol>
+                <li><strong>Initialization:</strong> The HAL library is initialized, the system clock is configured, and GPIO pins are initialized.</li>
+                <li><strong>Main Loop:</strong> The code enters an infinite loop where it turns the LED on and off with a delay of 100 milliseconds between each state change.</li>
+                <li><strong>LED Control:</strong> The function <code>HAL_GPIO_WritePin()</code> is used to set the state of the GPIO pin connected to the LED. <code>GPIO_PIN_SET</code> turns the LED on, while <code>GPIO_PIN_RESET</code> turns it off.</li>
+                <li><strong>Delay:</strong> The <code>HAL_Delay(100)</code> function creates a delay of 100 milliseconds, allowing the LED to remain in its current state for that duration.</li>
+            </ol>
+            <h3>Calculation Explanation</h3>
+            <p>The LED blinks on and off every 100 milliseconds, resulting in a frequency of:</p>
+            <ul>
+                <li>Frequency = 1 / (2 * 0.1 seconds) = 5 Hz</li>
+                <li>This means the LED will blink 5 times per second.</li>
+            </ul>
+        </section>
+    </div>
+    <footer>
+        <div class="container">
+            <p>STM32 Timer-Based LED Blinking Project &copy; 2023</p>
+            <p>Educational resource for embedded systems development</p>
+        </div>
+    </footer>
+</body>
+</html>
